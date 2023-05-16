@@ -18,3 +18,6 @@ constexpr auto g_RollInputMaximum = g_PitchInputMaximum;
 constexpr auto g_YawInputMinimum = g_RollInputMinimum;
 constexpr auto g_YawInputMiddle = g_RollInputMiddle;
 constexpr auto g_YawInputMaximum = g_RollInputMaximum;
+
+constexpr auto g_OutputMinimum = 0;
+constexpr auto g_OutputMaximum = 1000;
