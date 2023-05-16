@@ -1,18 +1,28 @@
-#include <Arduino.h>
+#include "core/Logging.hpp"
 
-// put function declarations here:
-int myFunction(int, int);
+#include "components/MPU6050.hpp"
 
-void setup() {
-  // put your setup code here, to run once:
-  int result = myFunction(2, 3);
+MPU6050 sensor;
+
+void setup()
+{
+  GYRO_CONTROLLER_SETUP_LOGGING(9600);
+
+  sensor.initialize();
 }
 
-void loop() {
-  // put your main code here, to run repeatedly:
-}
+void loop()
+{
+  sensor.readData();
+  const auto reading = sensor.getAcceleration();
 
-// put function definitions here:
-int myFunction(int x, int y) {
-  return x + y;
+  GYRO_CONTROLLER_PRINT("Throttle: ");
+  GYRO_CONTROLLER_PRINT(500);
+  GYRO_CONTROLLER_PRINT(" Pitch: ");
+  GYRO_CONTROLLER_PRINT(map(reading.m_Pitch, -90, 90, 0, 1000));
+  GYRO_CONTROLLER_PRINT(" Roll: ");
+  GYRO_CONTROLLER_PRINT(map(reading.m_Roll, -90, 90, 0, 1000));
+  GYRO_CONTROLLER_PRINT(" Yaw: ");
+  GYRO_CONTROLLER_PRINT(map(reading.m_Yaw, -90, 90, 0, 1000));
+  GYRO_CONTROLLER_PRINTLN();
 }
