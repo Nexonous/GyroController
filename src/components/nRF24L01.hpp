@@ -7,7 +7,7 @@
 #include <RF24.h>
 
 constexpr auto g_ChipEnablePin = 9;
-constexpr auto g_ChipSelectNotPin = 8;
+constexpr auto g_ChipSelectNotPin = 10;
 constexpr byte g_DefaultAddress[6] = "00001";
 
 /**

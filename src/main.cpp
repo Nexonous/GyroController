@@ -9,7 +9,7 @@ nRF24L01 g_Radio;
 
 void setup()
 {
-	GYRO_CONTROLLER_SETUP_LOGGING(9600);
+	GYRO_CONTROLLER_SETUP_LOGGING(115200);
 
 	// Initialize the MPU6050 sensor.
 	g_Sensor.initialize();

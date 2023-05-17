@@ -1,7 +1,13 @@
 // Copyright 2023 Nexonous
 // SPDX-License-Identifier: Apache-2.0
 
+#include <SPI.h>
 #include "nRF24L01.hpp"
+
+#ifdef GYRO_CONTROLLER_DEBUG
+#include "printf.h"
+
+#endif
 
 #include "core/Logging.hpp"
 
@@ -14,23 +20,57 @@ void nRF24L01::initialize()
 {
 	GYRO_CONTROLLER_PRINTLN("Initializing the nRF24L01 transceiver.");
 
-	m_Transceiver.begin();
+	if (!m_Transceiver.begin())
+	{
+		GYRO_CONTROLLER_PRINTLN("Failed to initialize the nRF24L01 transceiver!");
+		return;
+	}
+
+	m_Transceiver.setDataRate(RF24_250KBPS);
+
 	m_Transceiver.openWritingPipe(g_DefaultAddress);
 	m_Transceiver.stopListening();
+
+#ifdef GYRO_CONTROLLER_DEBUG
+	m_Transceiver.setAutoAck(1);
+	m_Transceiver.enableAckPayload();
+	m_Transceiver.setRetries(5, 15);
+	m_Transceiver.setPALevel(RF24_PA_MIN);
+
+	printf_begin();
+	m_Transceiver.printPrettyDetails();
+
+#endif
 
 	GYRO_CONTROLLER_PRINTLN("The nRF24L01 transceiver is initialized.");
 }
 
 void nRF24L01::write(String data)
 {
-	m_Transceiver.openWritingPipe(g_DefaultAddress);
+#ifdef GYRO_CONTROLLER_DEBUG
+	if (!m_Transceiver.write(data.c_str(), data.length()))
+	{
+		GYRO_CONTROLLER_PRINT("Failed to transfer data! ");
+	}
+
+#else
 	m_Transceiver.write(data.c_str(), data.length());
+
+#endif
 }
 
 void nRF24L01::writeRaw(const void *pData, size_t length)
 {
-	m_Transceiver.openWritingPipe(g_DefaultAddress);
+#ifdef GYRO_CONTROLLER_DEBUG
+	if (!m_Transceiver.write(pData, length))
+	{
+		GYRO_CONTROLLER_PRINT("Failed to transfer data! ");
+	}
+
+#else
 	m_Transceiver.write(pData, length);
+
+#endif
 }
 
 bool nRF24L01::isAvailable()
