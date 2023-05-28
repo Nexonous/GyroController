@@ -8,7 +8,7 @@
 
 constexpr auto g_ChipEnablePin = 9;
 constexpr auto g_ChipSelectNotPin = 10;
-constexpr byte g_DefaultAddress[6] = "00001";
+constexpr byte g_DefaultAddress[6] = "GyroC";
 
 /**
  * @brief nRF24L01 transceiver module class.
